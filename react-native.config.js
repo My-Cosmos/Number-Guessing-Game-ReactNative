@@ -1,3 +1,3 @@
 module.exports = {
-    assests: ['./assests/fonts']
+    assests: ['./assests/taking/The/Fuel/fonts']
 }
