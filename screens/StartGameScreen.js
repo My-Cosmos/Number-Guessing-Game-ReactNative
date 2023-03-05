@@ -20,6 +20,7 @@ export default function StartGameScreen({ onPickNumber }) {
     setEnteredNumber(enteredText);
   }
   function resetInputHandler() {
+    console.log("Pressed !!!");
     setEnteredNumber("");
   }
   function confirmInputHandler() {
