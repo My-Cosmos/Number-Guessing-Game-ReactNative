@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { Alert, StyleSheet, TextInput, View } from "react-native";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  ScrollView,
+  // Dimensions,
+  StyleSheet,
+  TextInput,
+  View,
+  useWindowDimensions
+} from "react-native";
 import Card from "../components/ui/Card";
 import { InstructionSetComponent } from "../components/ui/InstructionSetComponent";
 import PrimaryButton from "../components/ui/PrimaryButton";
@@ -13,9 +22,10 @@ export default function StartGameScreen({ onPickNumber }) {
   //   "lilex-light": require("../assets/fonts/Lilex-Light.otf"),
   //   // "Fira-Medium": require("./assets/fonts/Fira-Code-Medium.ttf"),
   // });
-  
+
   /* Ends */
   const [enteredNumber, setEnteredNumber] = useState("");
+  const { width, height } = useWindowDimensions(); //internally this hook will watch device height and width. When height and width will change this component get executed and will get updated height and width.
   function NumberInputHandler(enteredText) {
     setEnteredNumber(enteredText);
   }
@@ -33,42 +43,51 @@ export default function StartGameScreen({ onPickNumber }) {
     }
     onPickNumber(chosenNumber);
   }
+
+  const marginTopDistance = height < 380 ? 30 : 100;
+
   return (
-    <View style={styles.rootContainer}>
-      <Title>Guess My Number</Title>
-      <Card>
-        <InstructionSetComponent>Enter a Number</InstructionSetComponent>
-        <TextInput
-          style={styles.numberInput}
-          maxLength={2}
-          keyboardType="number-pad"
-          autoCapitalize="none"
-          autoCorrect={false}
-          onChangeText={NumberInputHandler}
-          value={enteredNumber}
-        />
-        <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton _onPress={resetInputHandler}>Reset</PrimaryButton>
+    <ScrollView style={{flex: 1}}>
+    <KeyboardAvoidingView style={{flex: 1}} behavior="position">
+      <View style={[styles.rootContainer, { marginTop: marginTopDistance }]}>
+        <Title>Guess My Number</Title>
+        <Card>
+          <InstructionSetComponent>Enter a Number</InstructionSetComponent>
+          <TextInput
+            style={styles.numberInput}
+            maxLength={2}
+            keyboardType="number-pad"
+            autoCapitalize="none"
+            autoCorrect={false}
+            onChangeText={NumberInputHandler}
+            value={enteredNumber}
+          />
+          <View style={styles.buttonsContainer}>
+            <View style={styles.buttonContainer}>
+              <PrimaryButton _onPress={resetInputHandler}>Reset</PrimaryButton>
+            </View>
+            <View style={styles.buttonContainer}>
+              <PrimaryButton _onPress={confirmInputHandler}>
+                Confirm
+              </PrimaryButton>
+            </View>
           </View>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton _onPress={confirmInputHandler}>
-              Confirm
-            </PrimaryButton>
-          </View>
-        </View>
-      </Card>
-    </View>
+        </Card>
+      </View>
+    </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
+
+// const deviceHeight = Dimensions.get('window').height; //-> better way of doing this is ``useWindowDimensions();`` hook
 
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    marginTop: 100,
-    alignItems: 'center'
+    // marginTop: deviceHeight < 380 ? 30 : 100,
+    alignItems: "center",
   },
-  instructionText:{
+  instructionText: {
     color: Colors.accent500,
     fontSize: 24,
   },
@@ -81,7 +100,7 @@ const styles = StyleSheet.create({
     color: Colors.accent600,
     marginVertical: 8,
     // fontFamily: 'Pacifico',
-    fontWeight: '900'
+    fontWeight: "900",
   },
   buttonsContainer: {
     flexDirection: "row",
