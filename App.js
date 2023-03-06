@@ -1,4 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
+import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { ImageBackground, SafeAreaView, StyleSheet } from "react-native";
 import { GameOverScreen } from "./screens/GameOverScreen";
@@ -48,6 +49,8 @@ export default function App() {
   }
 
   return (
+    <>
+    <StatusBar style="inverted" />
     <LinearGradient
       colors={["#0942bb", "#03bcd4", "#00ffd5"]}
       style={styles.rootScreen}
@@ -62,6 +65,7 @@ export default function App() {
         {/**When we use style in safeAreaView then we ensure that [All the available space - the area that is reserved for the notch] which will be taken care-of automatically is made available for the inner content */}
       </ImageBackground>
     </LinearGradient>
+    </>
   );
 }
 
